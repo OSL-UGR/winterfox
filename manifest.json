@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+	"name": "Winterfox",
+	"version": "1.0",
+
+	"description": "Add some winterly mood to your web browsing!",
+
+	"icons":
+	{
+		"48": "icons/winterfox-48.png"
+	},
+
+	"content_scripts":
+	[
+		{
+			"matches": ["<all_urls>"],
+			"js": ["particles.js", "winterfox.js"]
+		}
+	],
+
+	"permissions":
+	[
+		"activeTab"
+	]
+}
