@@ -1,5 +1,10 @@
 const WINTERFOX_CONTAINER_ID = "snow-container";
 
+const TOGGLE_ACTIONS = {
+	true_toggle: "true-toggle",
+	always_load: "always-load",
+};
+
 function exists_snow_container ()
 {
 	return document.getElementById(WINTERFOX_CONTAINER_ID);
@@ -20,6 +25,15 @@ function insert_snow_container ()
 	document.body.appendChild(snow_container);
 }
 
+function listen_for_controls ()
+{
+	browser.runtime.onMessage.addListener((message) =>
+	{
+		if (message.command === "toggle-snow")
+			toggle_snow();
+	});
+}
+
 function load_snow_particles ()
 {
 	particlesJS.load(
@@ -37,13 +51,24 @@ function remove_snow_container ()
 	document.body.removeChild(document.getElementById(WINTERFOX_CONTAINER_ID));
 }
 
-function main ()
+function toggle_snow (action)
 {
-	if (exists_snow_container())
+	const container_loaded = exists_snow_container();
+
+	if (container_loaded)
 		remove_snow_container();
 
-	insert_snow_container();
-	load_snow_particles();
+	if (!container_loaded || action === TOGGLE_ACTIONS.always_load)
+	{
+		insert_snow_container();
+		load_snow_particles();
+	}
+}
+
+function main ()
+{
+	toggle_snow(TOGGLE_ACTIONS.always_load);
+	listen_for_controls();
 }
 
 main();
