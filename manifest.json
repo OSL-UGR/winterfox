@@ -13,7 +13,7 @@
 	"browser_action":
 	{
 		"default_icon": "icons/winterfox-48.png",
-		"default_popup": "popup/controls.html",
+		"default_popup": "popup/popup.html",
 		"default_title": "Winterfox"
 	},
 
