@@ -6,7 +6,7 @@ function listen_for_controls ()
 
 	button.addEventListener("click", () =>
 	{
-		browser.tabs.query({active: true, currentWindow: true})
+		browser.tabs.query({currentWindow: true})
 			.then((tabs) =>
 			{
 				for (let tab of tabs)
@@ -18,19 +18,10 @@ function listen_for_controls ()
 	});
 }
 
-// function report_script_error (error)
-// {
-// 	document.querySelector("#popup-content").classList.add("hidden");
-// 	document.querySelector("#error-content").classList.remove("hidden");
-// 	console.error(`Failed to execute beastify content script: ${error.message}`);
-// }
-
 function main ()
 {
 	listen_for_controls();
-	browser.tabs
-		.executeScript({file: "/winterfox.js"});
-		// .catch(report_script_error);
+	browser.tabs.executeScript({file: "/winterfox.js"});
 }
 
 main();
