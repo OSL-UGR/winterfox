@@ -1,13 +1,18 @@
 {
 	"manifest_version": 2,
 	"name": "Winterfox",
-	"version": "1.0",
+	"version": "1.1",
 
 	"description": "Add some winterly mood to your web browsing!",
 
 	"icons":
 	{
 		"48": "icons/winterfox-48.png"
+	},
+
+	"background":
+	{
+		"scripts": ["global-state.js"]
 	},
 
 	"browser_action":

@@ -6,15 +6,9 @@ function listen_for_controls ()
 
 	button.addEventListener("click", () =>
 	{
-		browser.tabs.query({currentWindow: true})
-			.then((tabs) =>
-			{
-				for (let tab of tabs)
-					browser.tabs.sendMessage(
-						tab.id,
-						{command: WINTERFOX_TOGGLE_MESSAGE}
-					);
-			})
+		browser.runtime
+			.sendMessage({command: WINTERFOX_TOGGLE_MESSAGE})
+			.then(() => {});
 	});
 }
 

@@ -1,9 +1,6 @@
-const WINTERFOX_CONTAINER_ID = "snow-container";
-
-const TOGGLE_ACTIONS = {
-	true_toggle: "true-toggle",
-	always_load: "always-load",
-};
+const WINTERFOX_CONTAINER_ID      = "snow-container";
+const WINTERFOX_IS_ACTIVE_MESSAGE = "is-active";
+const WINTERFOX_TOGGLE_MESSAGE    = "toggle-snow";
 
 function exists_snow_container ()
 {
@@ -29,8 +26,8 @@ function listen_for_controls ()
 {
 	browser.runtime.onMessage.addListener((message) =>
 	{
-		if (message.command === "toggle-snow")
-			toggle_snow();
+		if (message.command === WINTERFOX_TOGGLE_MESSAGE)
+			toggle_snow(message.is_active);
 	});
 }
 
@@ -46,19 +43,27 @@ function load_snow_particles ()
 	);
 }
 
+function log_response_error (error)
+{
+	console.log(`Error: ${error}`)
+}
+
 function remove_snow_container ()
 {
 	document.body.removeChild(document.getElementById(WINTERFOX_CONTAINER_ID));
 }
 
-function toggle_snow (action)
+function load_snow_on_open (message)
 {
-	const container_loaded = exists_snow_container();
+	toggle_snow(message.is_active);
+}
 
-	if (container_loaded)
+function toggle_snow (is_active)
+{
+	if (exists_snow_container())
 		remove_snow_container();
 
-	if (!container_loaded || action === TOGGLE_ACTIONS.always_load)
+	if (is_active)
 	{
 		insert_snow_container();
 		load_snow_particles();
@@ -67,7 +72,10 @@ function toggle_snow (action)
 
 function main ()
 {
-	toggle_snow(TOGGLE_ACTIONS.always_load);
+	browser.runtime
+		.sendMessage({command: WINTERFOX_IS_ACTIVE_MESSAGE})
+		.then(load_snow_on_open, log_response_error);
+
 	listen_for_controls();
 }
 
